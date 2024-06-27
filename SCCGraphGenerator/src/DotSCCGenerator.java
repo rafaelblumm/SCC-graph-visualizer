@@ -75,35 +75,37 @@ public class DotSCCGenerator {
 
     private String generateAdjencyMatrix() {
         HashMap<Integer, String> colorMap = generateColorMap();
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sbColorConfig = new StringBuilder();
+        StringBuilder sbAdjencyList = new StringBuilder();
 
         for (Integer vertex : this.graph.vertices) {
+            sbColorConfig.append(TAB)
+                         .append(vertex)
+                         .append("[fillcolor=" + colorMap.get(vertex) +"]\n");
+
             Set<Integer> adjencyList = this.graph.adjacencyLists.get(vertex);
-            if (adjencyList.size() == 0) {
-                sb.append(TAB)
-                  .append(vertex)
-                  .append("[fillcolor=" + colorMap.get(vertex) +"]")
-                  .append("\n");
+            if (adjencyList.size() == 1 && adjencyList.contains(null)) {
+                sbAdjencyList.append(TAB)
+                             .append(vertex);
                 continue;
             }
 
-            sb.append(TAB)
-              .append(vertex)
-              .append(" -> ")
-              .append(formatAdjencyList(adjencyList, colorMap))
-              .append("\n");
+            sbAdjencyList.append(TAB)
+                         .append(vertex)
+                         .append(" -> ")
+                         .append(formatAdjencyList(adjencyList))
+                         .append("\n");
         }
-
-        return sb.toString();
+        
+        return sbColorConfig.append(sbAdjencyList).toString();
     }
 
-    private String formatAdjencyList(Set<Integer> adjacencyList, HashMap<Integer, String> colorMap) {
+    private String formatAdjencyList(Set<Integer> adjacencyList) {
         StringBuilder sb = new StringBuilder();
         sb.append("{ ");
         
         for (Integer vertex : adjacencyList)
             sb.append(vertex)
-              .append("[fillcolor=" + colorMap.get(vertex) +"]")
               .append(" ");
 
         sb.append("}");
