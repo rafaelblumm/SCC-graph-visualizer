@@ -67,7 +67,7 @@ with st.sidebar:
     st.caption("Estruturas Avançadas de Dados II")
     st.caption("Rafael Blumm")
 
-st.subheader("Visualizador de :green[componentes fortemente conectados] de um grafo", divider="gray")
+st.subheader("Visualizador de :green[Componentes Fortemente Conexos] de um grafo", divider="gray")
 graph_svg = "/app/tmp/generated_graph.svg"
 if os.path.isfile(graph_svg):
     st.image(graph_svg, width=st.session_state["graph_width"])
