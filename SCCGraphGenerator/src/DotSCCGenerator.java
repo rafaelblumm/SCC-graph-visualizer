@@ -79,8 +79,13 @@ public class DotSCCGenerator {
 
         for (Integer vertex : this.graph.vertices) {
             Set<Integer> adjencyList = this.graph.adjacencyLists.get(vertex);
-            if (adjencyList.size() == 0)
+            if (adjencyList.size() == 0) {
+                sb.append(TAB)
+                  .append(vertex)
+                  .append("[fillcolor=" + colorMap.get(vertex) +"]")
+                  .append("\n");
                 continue;
+            }
 
             sb.append(TAB)
               .append(vertex)

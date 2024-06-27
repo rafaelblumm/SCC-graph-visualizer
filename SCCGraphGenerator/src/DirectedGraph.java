@@ -30,23 +30,32 @@ public final class DirectedGraph {
         for (String line : dotGraph.split(";")) {
             String[] splittedLine = line.split("->");
             String key = splittedLine[0].trim();
+			if (splittedLine.length == 1) {
+				elements.add(new Integer[]{Integer.parseInt(key), null});
+				continue;
+			}
+
             String values = splittedLine[1].replace("[", "")
                                            .replace("]", "")
                                            .replace("\"", "")
                                            .trim();
+
             for (String value : values.split(" ")) {
                 Integer[] connection = {Integer.parseInt(key), Integer.parseInt(value)};
                 elements.add(connection);
             }
         }
+
         HashSet<Integer> all_nodes = new HashSet<>();
         for (Integer[] connection : elements)
             for (Integer node : connection)
-                all_nodes.add(node);
-        
+				if (node != null)
+                	all_nodes.add(node);
+
         DirectedGraph graph = new DirectedGraph(all_nodes.size());
         for (Integer[] connection : elements)
-            graph.addEdge(connection[0], connection[1]);
+			if (connection[1] != null)
+				graph.addEdge(connection[0], connection[1]);
         
         return graph;
 	}
