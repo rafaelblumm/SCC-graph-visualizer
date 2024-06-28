@@ -32,6 +32,10 @@ final class TarjanDemo {
         System.out.println();
         System.out.println("============== SAMPLE 3 ==============");
         prettyPrintSCC(SampleGraphs.sample3().getSCC());
+
+        System.out.println();
+        System.out.println("============== SAMPLE 4 ==============");
+        prettyPrintSCC(SampleGraphs.sample4().getSCC());
     }
 
     private static void prettyPrintSCC(List<Set<Integer>> scc) {

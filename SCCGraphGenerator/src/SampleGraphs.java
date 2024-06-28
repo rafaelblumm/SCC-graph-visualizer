@@ -123,4 +123,30 @@ public class SampleGraphs {
 
         return graph;
     }
+
+    public static DirectedGraph sample4() {
+        DirectedGraph graph = new DirectedGraph(8);
+
+        graph.addEdge(0, 1);
+        graph.addEdge(1, 2);
+        graph.addEdge(2, 0);
+
+        graph.addEdge(3, 1);
+        graph.addEdge(3, 2);
+        graph.addEdge(3, 5);
+
+        graph.addEdge(4, 2);
+        graph.addEdge(4, 6);
+
+        graph.addEdge(5, 3);
+        graph.addEdge(5, 4);
+
+        graph.addEdge(6, 4);
+        
+        graph.addEdge(7, 5);
+        graph.addEdge(7, 6);
+        graph.addEdge(7, 7);
+
+        return graph;
+    }
 }
