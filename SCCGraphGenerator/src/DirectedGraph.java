@@ -8,12 +8,11 @@ import java.util.Stack;
 
 public final class DirectedGraph {
 
-	public List<Integer> vertices = new ArrayList<Integer>();
-	public List<Set<Integer>> adjacencyLists;
-
+	private List<Integer> vertices = new ArrayList<Integer>();
+	private List<Set<Integer>> adjacencyLists;
 	private int index = 0;
 	private Stack<Integer> stack = new Stack<Integer>();
-	private Map<Integer, Integer> numbers = new HashMap<Integer, Integer>();
+	private Map<Integer, Integer> visitTimes = new HashMap<Integer, Integer>();
 	private Map<Integer, Integer> lowlinks = new HashMap<Integer, Integer>();
 	private List<Set<Integer>> stronglyConnectedComponents = new ArrayList<Set<Integer>>();
 
@@ -23,6 +22,14 @@ public final class DirectedGraph {
 			vertices.add(i);
 			adjacencyLists.add(new HashSet<Integer>());
 		}
+	}
+
+	public List<Integer> getVertices() {
+		return this.vertices;
+	}
+
+	public List<Set<Integer>> getAdjacencyLists() {
+		return this.adjacencyLists;
 	}
 
 	public static DirectedGraph parseFromDot(String dotGraph) {
@@ -66,28 +73,27 @@ public final class DirectedGraph {
 
 	public List<Set<Integer>> getSCC() {
 		for (int vertex : vertices)
-			if (!numbers.keySet().contains(vertex))
+			if (!visitTimes.containsKey(vertex))
 				stronglyConnect(vertex);
 
 		return stronglyConnectedComponents;
 	}
 
 	private void stronglyConnect(int vertex) {
-		numbers.put(vertex, index);
+		visitTimes.put(vertex, index);
 		lowlinks.put(vertex, index);
 		index += 1;
 		stack.push(vertex);
 
 		for (int adjacent : adjacencyLists.get(vertex)) {
-			if (!numbers.keySet().contains(adjacent)) {
+			if (!visitTimes.containsKey(adjacent)) {
 				stronglyConnect(adjacent);
 				lowlinks.put(vertex, Math.min(lowlinks.get(vertex), lowlinks.get(adjacent)));
-			} else if (stack.contains(adjacent)) {
-				lowlinks.put(vertex, Math.min(lowlinks.get(vertex), numbers.get(adjacent)));
-			}
+			} else if (stack.contains(adjacent))
+				lowlinks.put(vertex, Math.min(lowlinks.get(vertex), visitTimes.get(adjacent)));
 		}
 
-		if (lowlinks.get(vertex) == numbers.get(vertex)) {
+		if (lowlinks.get(vertex) == visitTimes.get(vertex)) {
 			Set<Integer> stonglyConnectedComponent = new HashSet<Integer>();
 			int top;
 			do {
@@ -98,5 +104,4 @@ public final class DirectedGraph {
 			stronglyConnectedComponents.add(stonglyConnectedComponent);
 		}
 	}
-
 }
